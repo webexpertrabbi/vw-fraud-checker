@@ -445,13 +445,15 @@ class Admin {
 				<?php settings_fields( 'vw_fraud_checker_providers_group' ); ?>
 				<div class="vwfc-provider-grid">
 				<?php foreach ( $definitions as $slug => $provider ) :
-					$values = isset( $settings[ $slug ] ) ? $settings[ $slug ] : array();
+					$values      = isset( $settings[ $slug ] ) ? $settings[ $slug ] : array();
+					$is_enabled  = ! empty( $values['enabled'] );
+					$card_classes = 'vwfc-provider-card' . ( $is_enabled ? ' is-enabled' : '' );
 					?>
-					<section class="vwfc-provider-card">
+					<section class="<?php echo esc_attr( $card_classes ); ?>">
 						<header class="vwfc-provider-card__header">
 							<h2><?php echo esc_html( $provider['label'] ); ?></h2>
-							<span class="vwfc-provider-card__status <?php echo ! empty( $values['enabled'] ) ? 'is-enabled' : 'is-disabled'; ?>">
-								<?php echo esc_html( ! empty( $values['enabled'] ) ? __( 'Enabled', 'vw-fraud-checker' ) : __( 'Disabled', 'vw-fraud-checker' ) ); ?>
+							<span class="vwfc-provider-card__status <?php echo $is_enabled ? 'is-enabled' : 'is-disabled'; ?>">
+								<?php echo esc_html( $is_enabled ? __( 'Enabled', 'vw-fraud-checker' ) : __( 'Disabled', 'vw-fraud-checker' ) ); ?>
 							</span>
 						</header>
 						<p class="description"><?php echo esc_html( $provider['description'] ); ?></p>
